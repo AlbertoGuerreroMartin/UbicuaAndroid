@@ -9,11 +9,45 @@
     android:orientation="vertical"
     tools:context="com.albertoguerrero.ubicuaandroid.app.MainActivity">
 
-    <EditText
-        android:id="@+id/main_phoneText"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="phone"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="5dp"
+            android:textSize="20dp"
+            android:text="Nombre: "/>
+
+        <EditText
+            android:id="@+id/main_nameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="5dp"
+            android:textSize="20dp"
+            android:text="Teléfono: "/>
+
+        <EditText
+            android:id="@+id/main_phoneText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/main_addButton"

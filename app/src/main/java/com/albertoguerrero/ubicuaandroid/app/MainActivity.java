@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,18 +16,24 @@ import com.albertoguerrero.ubicuaandroid.app.Adapters.PhoneListAdapter;
 
 public class MainActivity extends Activity {
 
+    public static final int MAX_CONTACTS = 20;
+
+    private EditText nameText;
     private EditText phoneText;
     private ListView phoneList;
     private Button addButton;
 
-    private ArrayAdapter<String> arrayAdapter;
+    private PhoneListAdapter<Contact> phoneListAdapter;
+    private Contact[] contacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.contacts = new Contact[MAX_CONTACTS];
         this.phoneText = (EditText) findViewById(R.id.main_phoneText);
+        this.nameText = (EditText) findViewById(R.id.main_nameText);
 
         //--- Set ListView ---
         this.phoneList = (ListView) findViewById(R.id.main_phoneList);
@@ -62,8 +67,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        this.arrayAdapter = new ArrayAdapter<>(this, R.layout.phone_cell);
-        this.phoneList.setAdapter(this.arrayAdapter);
+        this.phoneListAdapter = new PhoneListAdapter<>(this, R.layout.phone_cell, contacts);
+        this.phoneList.setAdapter(this.phoneListAdapter);
         //--------------------
 
         //--- Set add button ---
@@ -71,9 +76,13 @@ public class MainActivity extends Activity {
         this.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phoneNumber = phoneText.getText().toString();
-                arrayAdapter.add(phoneNumber);
-                phoneText.setText("");
+                String name = nameText.getText().toString(), phone = phoneText.getText().toString();
+                if(name != null && phone != null)
+                {
+                    phoneListAdapter.add(new Contact(name, phone));
+                    nameText.setText("");
+                    phoneText.setText("");
+                }
             }
         });
         //----------------------

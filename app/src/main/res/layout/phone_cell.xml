@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:paddingLeft="30dp"
-        android:text="Titulo del post"
+        android:text="Nombre del contacto"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -43,7 +43,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/tvTitulo"
         android:paddingTop="10dp"
-        android:text="25/05/2012"
+        android:text="639960473"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
