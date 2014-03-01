@@ -1,27 +1,20 @@
-package com.albertoguerrero.ubicuaandroid.app.Adapters;
+package com.albertoguerrero.ubicuaandroid.app;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
-import com.albertoguerrero.ubicuaandroid.app.R;
 
-/**
- * Created by albertoguerreromartin on 26/02/14.
- */
-public class PhoneListAdapter<Contact> extends ArrayAdapter<Contact>
+public class PhoneListAdapter extends ArrayAdapter<Contact>
 {
-    Context context;
     int layoutResourceId;
-    Contact data[] = null;
 
-    public PhoneListAdapter(Context context, int layoutResourceId, Contact[] data) {
-        super(context, layoutResourceId, data);
+    public PhoneListAdapter(Context context, int layoutResourceId) {
+        super(context, layoutResourceId);
         this.layoutResourceId = layoutResourceId;
-        this.context = context;
-        this.data = data;
     }
 
     @Override
@@ -37,9 +30,12 @@ public class PhoneListAdapter<Contact> extends ArrayAdapter<Contact>
         Contact contact = getItem(position);
 
         if (contact != null) {
+            TextView nameView = (TextView) row.findViewById(R.id.nameTextView);
+            TextView phoneView = (TextView) row.findViewById(R.id.phoneNumberTextView);
 
+            nameView.setText(contact.getName());
+            phoneView.setText(contact.getPhoneNumber());
         }
-
 
         return row;
     }

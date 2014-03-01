@@ -1,6 +1,8 @@
 package com.albertoguerrero.ubicuaandroid.app;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -8,11 +10,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.albertoguerrero.ubicuaandroid.app.Adapters.PhoneListAdapter;
 
 public class MainActivity extends Activity {
 
@@ -23,8 +24,9 @@ public class MainActivity extends Activity {
     private ListView phoneList;
     private Button addButton;
 
-    private PhoneListAdapter<Contact> phoneListAdapter;
+    private PhoneListAdapter phoneListAdapter;
     private Contact[] contacts;
+    private int numContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         this.contacts = new Contact[MAX_CONTACTS];
+        numContacts=0;
+
         this.phoneText = (EditText) findViewById(R.id.main_phoneText);
         this.nameText = (EditText) findViewById(R.id.main_nameText);
 
@@ -67,8 +71,17 @@ public class MainActivity extends Activity {
             }
         });
 
-        this.phoneListAdapter = new PhoneListAdapter<>(this, R.layout.phone_cell, contacts);
+        this.phoneListAdapter = new PhoneListAdapter(this, R.layout.phone_cell);
         this.phoneList.setAdapter(this.phoneListAdapter);
+        this.phoneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String uri = "tel:" + contacts[position].getPhoneNumber();
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse(uri));
+                startActivity(intent);
+            }
+        });
         //--------------------
 
         //--- Set add button ---
@@ -77,9 +90,11 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String name = nameText.getText().toString(), phone = phoneText.getText().toString();
-                if(name != null && phone != null)
+                if(numContacts<MAX_CONTACTS)
                 {
-                    phoneListAdapter.add(new Contact(name, phone));
+                    Contact newContact = new Contact(name, phone);
+                    contacts[numContacts++] = newContact;
+                    phoneListAdapter.add(newContact);
                     nameText.setText("");
                     phoneText.setText("");
                 }
