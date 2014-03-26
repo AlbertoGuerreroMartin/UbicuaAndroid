@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class MainActivity extends Activity {
 
     public static final int MAX_CONTACTS = 20;
@@ -25,7 +28,9 @@ public class MainActivity extends Activity {
     private Button addButton;
 
     private PhoneListAdapter phoneListAdapter;
-    private Contact[] contacts;
+    //private ArrayList<Contact> contacts;
+    private ArrayList<Contact> contactsToBeDeleted;
+
     private int numContacts;
 
     @Override
@@ -33,7 +38,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.contacts = new Contact[MAX_CONTACTS];
+        //this.contacts = new ArrayList<>(MAX_CONTACTS);
+        this.contactsToBeDeleted = new ArrayList<>(MAX_CONTACTS);
         numContacts=0;
 
         this.phoneText = (EditText) findViewById(R.id.main_phoneText);
@@ -45,7 +51,12 @@ public class MainActivity extends Activity {
         this.phoneList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
+                if(checked) {
+                    contactsToBeDeleted.add(phoneListAdapter.getItem(position));
+                }
+                else {
+                    contactsToBeDeleted.remove(phoneListAdapter.getItem(position));
+                }
             }
 
             @Override
@@ -62,6 +73,11 @@ public class MainActivity extends Activity {
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                Iterator<Contact> iterator = contactsToBeDeleted.iterator();
+                while (iterator.hasNext())
+                    phoneListAdapter.remove(iterator.next());
+
+                contactsToBeDeleted = new ArrayList<>(MAX_CONTACTS);
                 return false;
             }
 
@@ -76,7 +92,7 @@ public class MainActivity extends Activity {
         this.phoneList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String uri = "tel:" + contacts[position].getPhoneNumber();
+                String uri = "tel:" + phoneListAdapter.getItem(position).getPhoneNumber();
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 intent.setData(Uri.parse(uri));
                 startActivity(intent);
@@ -93,7 +109,6 @@ public class MainActivity extends Activity {
                 if(numContacts<MAX_CONTACTS)
                 {
                     Contact newContact = new Contact(name, phone);
-                    contacts[numContacts++] = newContact;
                     phoneListAdapter.add(newContact);
                     nameText.setText("");
                     phoneText.setText("");
@@ -118,7 +133,7 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.delete_entry) {
             return true;
         }
         return super.onOptionsItemSelected(item);
