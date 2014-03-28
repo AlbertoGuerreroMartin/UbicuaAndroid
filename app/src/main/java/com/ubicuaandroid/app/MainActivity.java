@@ -4,21 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.albertoguerrero.ubicuaandroid.app.R;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class MainActivity extends Activity {
 
@@ -30,8 +23,6 @@ public class MainActivity extends Activity {
     private Button addButton;
 
     private PhoneListAdapter phoneListAdapter;
-    //private ArrayList<Contact> contacts;
-    private ArrayList<Contact> contactsToBeDeleted;
 
     private int numContacts;
 
@@ -40,8 +31,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //this.contacts = new ArrayList<>(MAX_CONTACTS);
-        this.contactsToBeDeleted = new ArrayList<>(MAX_CONTACTS);
         numContacts=0;
 
         this.phoneText = (EditText) findViewById(R.id.main_phoneText);
@@ -49,52 +38,6 @@ public class MainActivity extends Activity {
 
         //--- Set ListView ---
         this.phoneList = (ListView) findViewById(R.id.main_phoneList);
-        this.phoneList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        this.phoneList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-
-                phoneListAdapter.getItem(position).setSelected(checked);
-
-                if(checked) {
-                    contactsToBeDeleted.add(phoneListAdapter.getItem(position));
-                }
-                else {
-                    contactsToBeDeleted.remove(phoneListAdapter.getItem(position));
-                }
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.cabselection_menu, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                Iterator<Contact> iterator = contactsToBeDeleted.iterator();
-                while (iterator.hasNext())
-                    phoneListAdapter.remove(iterator.next());
-
-                contactsToBeDeleted = new ArrayList<>(MAX_CONTACTS);
-
-                if(phoneListAdapter.isEmpty())
-                    mode.finish();
-
-                return false;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-
-            }
-        });
 
         this.phoneListAdapter = new PhoneListAdapter(this, R.layout.phone_cell);
         this.phoneList.setAdapter(this.phoneListAdapter);
