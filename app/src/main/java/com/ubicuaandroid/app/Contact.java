@@ -1,4 +1,4 @@
-package com.albertoguerrero.ubicuaandroid.app;
+package com.ubicuaandroid.app;
 
 /**
  * Created by albertoguerreromartin on 26/02/14.
@@ -7,6 +7,7 @@ public class Contact
 {
     private String name;
     private String phoneNumber;
+    private boolean selected;
 
     public Contact(String name, String phoneNumber) {
         this.name = name;
@@ -27,5 +28,13 @@ public class Contact
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 }

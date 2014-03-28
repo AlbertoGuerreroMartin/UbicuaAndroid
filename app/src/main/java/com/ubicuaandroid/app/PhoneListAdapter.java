@@ -1,4 +1,4 @@
-package com.albertoguerrero.ubicuaandroid.app;
+package com.ubicuaandroid.app;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.albertoguerrero.ubicuaandroid.app.R;
 
 
 public class PhoneListAdapter extends ArrayAdapter<Contact>

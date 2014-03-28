@@ -1,4 +1,4 @@
-package com.albertoguerrero.ubicuaandroid.app;
+package com.ubicuaandroid.app;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.albertoguerrero.ubicuaandroid.app.R;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,6 +53,9 @@ public class MainActivity extends Activity {
         this.phoneList.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+
+                phoneListAdapter.getItem(position).setSelected(checked);
+
                 if(checked) {
                     contactsToBeDeleted.add(phoneListAdapter.getItem(position));
                 }
@@ -78,6 +83,10 @@ public class MainActivity extends Activity {
                     phoneListAdapter.remove(iterator.next());
 
                 contactsToBeDeleted = new ArrayList<>(MAX_CONTACTS);
+
+                if(phoneListAdapter.isEmpty())
+                    mode.finish();
+
                 return false;
             }
 
@@ -118,15 +127,6 @@ public class MainActivity extends Activity {
         //----------------------
     }
 
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -138,5 +138,4 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
